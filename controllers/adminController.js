@@ -8,8 +8,23 @@ class AdminController {
 
   login = async (req, res) => {
     // logic for admin login
+    const { email, password } = req.body;
+    const user = await Admin.findOne({ email });
+    if (!user) {
+      return res.send(`email doesn't exists!`);
+    }
 
-    // check if the email exists before
+    try {
+      const validPass = await bcrypt.compare(password, user['password']);
+      if (!validPass) {
+        return res.send('invalid password!');
+      }   
+      res.json({ 'login': true });
+    }
+    catch (err) {
+      res.send(err);
+    }
+    
   }
 
 
@@ -27,7 +42,7 @@ class AdminController {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    
+
     try {
       const newAdmin = new Admin({
         email: email,
