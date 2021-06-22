@@ -1,27 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const { createMarket, readMarket, readMarkets, updateMarket, deleteMarket } = require('../controllers/marketController.js');
+const auth = require('../middlewares/auth.js');
 
 
 
 // read all markets
-router.get('/', readMarkets)
+router.get('/', readMarkets);
 
 
 // read a specific market
-router.get('/:id', readMarket)
+router.get('/:id', readMarket);
 
 
 // create a new market
-router.post('/new', createMarket)
+router.post('/new', auth, createMarket);
 
 
 // update a post
-router.put('/:id', updateMarket)
+router.put('/:id', auth, updateMarket);
 
 
 // delete a post
-router.delete('/:id', deleteMarket)
+router.delete('/:id', auth, deleteMarket);
 
 
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { login, signup } = require('../controllers/adminController.js');
+const auth = require('../middlewares/auth.js');
 
 
 
@@ -9,7 +10,7 @@ router.post('/login', login);
 
 
 // admin create another admin
-router.post('/signup', signup)
+router.post('/signup', auth, signup)
 
 
 

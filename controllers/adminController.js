@@ -1,6 +1,8 @@
 const Admin = require('../models/adminModel.js');
 const { verifyAdmin } = require('../middlewares/verification.js');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv/config.js');
 
 
 
@@ -18,8 +20,9 @@ class AdminController {
       const validPass = await bcrypt.compare(password, user['password']);
       if (!validPass) {
         return res.send('invalid password!');
-      }   
-      res.json({ 'login': true });
+      }
+      const token = jwt.sign({ _id: user._id }, process.env.AUTH_SECRET_TOKEN);
+      res.header('auth-token', token).json({ token, 'login': true });
     }
     catch (err) {
       res.send(err);
