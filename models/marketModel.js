@@ -26,6 +26,11 @@ const MarketModel = mongoose.Schema({
   geolocation: {
     type: Object,
     required: true
+  },
+
+  timestamp: {
+    type: Date,
+    default: Date.now()
   }
 
 });

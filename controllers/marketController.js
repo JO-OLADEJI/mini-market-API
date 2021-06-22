@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 const Market = require('../models/marketModel.js');
+const { verifyMarket } = require('../middlewares/verification.js');
 
 
 
@@ -7,6 +7,20 @@ class MarketController {
 
   createMarket = async (req, res) => {
     // handle the creation of a new market
+    const { value, error } = verifyMarket(req.body);
+    if (error) {
+      return res.send(error.details[0].message);
+    }
+
+    const { name, description, foodCategory, images, geolocation } = value;
+    try {
+      const newMarket = new Market({ name, description, foodCategory, images, geolocation });
+      const save = await newMarket.save();
+      res.json(save);
+    }
+    catch (err) {
+      res.send(err);
+    }
   }
 
 
@@ -24,8 +38,8 @@ class MarketController {
 
   readMarket = async (req, res) => {
     // returns a specific market by ID
+    const { id } = req.params;
     try {
-      const { id } = req.params;
       const reqMarket = await Market.findById(id);
       res.json(reqMarket);
     }
@@ -42,8 +56,8 @@ class MarketController {
 
   deleteMarket = async (req, res) => {
     // handles the deletion of a specific market by ID
+    const { id } = req.params;
     try {
-      const { id } = req.params;
       const delMarket = await Market.deleteOne({ _id: id });
       res.json(delMarket);
     }
