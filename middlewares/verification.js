@@ -14,4 +14,16 @@ const verifyMarket = (body) => {
 }
 
 
-module.exports = { verifyMarket }
+const verifyAdmin = (body) => {
+  const adminSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(5).required()
+  });
+
+  return adminSchema.validate(body);
+}
+
+
+
+
+module.exports = { verifyMarket, verifyAdmin }
