@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
+const { dbConnection } = require('./db/dbConnection.js');
 
 
+
+dbConnection();
 app.use(express.json());
 
 
