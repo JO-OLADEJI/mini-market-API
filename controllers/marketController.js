@@ -42,6 +42,14 @@ class MarketController {
 
   deleteMarket = async (req, res) => {
     // handles the deletion of a specific market by ID
+    try {
+      const { id } = req.params;
+      const delMarket = await Market.deleteOne({ _id: id });
+      res.json(delMarket);
+    }
+    catch (err) {
+      res.send(err);
+    }
   }
 
 }
