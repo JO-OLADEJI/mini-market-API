@@ -51,6 +51,31 @@ class MarketController {
 
   updateMarket = async (req, res) => {
     // handles the updating of an existing market
+    const { id } = req.params;
+    const { value, error } = verifyMarket(req.body);
+    if (error) {
+      return res.send(error.details[0].message);
+    }
+
+    const { name, description, foodCategory, images, geolocation } = value;
+    try {
+      const update = await Market.updateOne(
+        { _id: id }, 
+        {
+          $set: {
+            name,
+            description,
+            foodCategory,
+            images,
+            geolocation
+          }
+        }
+      );
+      res.json(update);
+    }
+    catch (err) {
+      res.send(err);
+    }
   }
 
 
