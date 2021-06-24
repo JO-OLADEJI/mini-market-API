@@ -3,10 +3,12 @@ const app = express();
 const { dbConnection } = require('./db/dbConnection.js');
 const marketRoute = require('./routes/market.js');
 const adminRoute = require('./routes/admin.js');
+const cors = require('cors');
 
 
 
 dbConnection();
+app.use(cors());
 app.use(express.json());
 
 
