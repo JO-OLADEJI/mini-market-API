@@ -14,7 +14,7 @@ router.get('/:id', readMarket);
 
 
 // create a new market
-router.post('/new', auth, createMarket);
+router.post('/', auth, createMarket);
 
 
 // update a post
