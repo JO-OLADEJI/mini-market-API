@@ -13,13 +13,13 @@ class AdminController {
     const { email, password } = req.body;
     const user = await Admin.findOne({ email });
     if (!user) {
-      return res.send(`email doesn't exists!`);
+      return res.json({ 'login': false });
     }
 
     try {
       const validPass = await bcrypt.compare(password, user['password']);
       if (!validPass) {
-        return res.send('invalid password!');
+        return res.json({ 'login': false });
       }
       const token = jwt.sign({ _id: user._id }, process.env.AUTH_SECRET_TOKEN);
       res.header('auth-token', token).json({ token, 'login': true });
